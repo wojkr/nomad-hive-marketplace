@@ -159,7 +159,7 @@ const RegisterModal = () => {
                     type="password"
                     {...register("password")}
                   />
-                  <Button label="Continue" onClick={handleSubmit} />
+                  <Button label="Continue" onClick={handleSubmit(onSubmit)} />
                 </form>
               </div>
               {/* FOOTER */}
