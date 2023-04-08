@@ -32,11 +32,7 @@ const Button: React.FC<ButtonProps> = ({
   hover:opacity-80
   transition
   w-full
-  ${
-    outline
-      ? "bg-light border-dark text-dark"
-      : "bg-dark border-dark text-light"
-  }
+  ${outline ? "bg-light border-dark" : "bg-accent border-accent text-light"}
 ${
   small
     ? "py-1 text-sm font-light border-[1px]"

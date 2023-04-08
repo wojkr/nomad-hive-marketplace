@@ -18,6 +18,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ onClick, label }) => {
   font-semibold
   transition duration-300
   "
+      onClick={onClick}
     >
       {label}
     </div>

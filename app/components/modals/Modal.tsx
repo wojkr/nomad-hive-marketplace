@@ -138,12 +138,13 @@ const Modal: React.FC<ModalProps> = ({
                 absolute
                 left-9
                 "
+                  onClick={handleClose}
                 >
                   <IoMdClose size={18} />
                 </button>
                 <div
                   className="
-                text-lg font-semibold"
+                  text-lg font-semibold"
                 >
                   {title}
                 </div>
@@ -161,13 +162,15 @@ const Modal: React.FC<ModalProps> = ({
               {/* FOOTER */}
               <div
                 className="
-              flex flex-col gap-3 p-6"
+              flex flex-col 
+              "
               >
                 <div
                   className="
                 flex
                 flex-row
                 items-center
+                p-6
                 gap-4
                 w-full
                 "
@@ -186,6 +189,7 @@ const Modal: React.FC<ModalProps> = ({
                     onClick={handleSubmit}
                   />
                 </div>
+                {footer}
               </div>
             </div>
           </div>
