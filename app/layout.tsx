@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "./components/navbar/Navbar";
 import CilentOnly from "./components/CilentOnly";
 import RegisterModal from "./components/modals/RegisterModal";
+import LoginModal from "./components/modals/LoginModal";
 import ToasterProvider from "./providers/ToasterProvider";
 
 export const metadata = {
@@ -21,6 +22,7 @@ export default function RootLayout({
       <body className={font.className}>
         <CilentOnly>
           <ToasterProvider />
+          <LoginModal />
           <RegisterModal />
           <Navbar />
         </CilentOnly>
