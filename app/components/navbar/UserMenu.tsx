@@ -49,7 +49,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
           >
             <BiMenu size="18" onClick={toggleOpen} />
             <div className="hidden md:block">
-              <Avatar />
+              <Avatar src={currentUser?.image} />
             </div>
           </div>
         </Box>
