@@ -15,17 +15,12 @@ import Modal from "./Modal";
 import Button from "../Button";
 import Heading from "../Heading";
 import Input from "../Input";
-
-const handleSubmit = () => {
-  return null;
-};
-const handleGoogleSubmit = () => {
-  return null;
-};
+import useRegisterModal from "@/app/hooks/useRegisterModal";
 
 const LoginModal = () => {
   const [isLoading, setIsLoading] = useState(false);
   const loginModal = useLoginModal();
+  const registerModal = useRegisterModal();
   const router = useRouter();
 
   const {
@@ -40,7 +35,10 @@ const LoginModal = () => {
   });
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
-    signIn("credentials", { ...data, redirect: false }).then((cb) => {
+    signIn("credentials", {
+      ...data,
+      redirect: false,
+    }).then((cb) => {
       setIsLoading(false);
 
       if (cb?.ok) {
@@ -98,19 +96,22 @@ const LoginModal = () => {
       <Button
         label="Continue with Google"
         icon={FcGoogle}
-        onClick={handleGoogleSubmit}
+        onClick={() => signIn("google")}
         outline
       />
       <Button
         label="Continue with Github"
         icon={AiFillGithub}
-        onClick={handleGoogleSubmit}
+        onClick={() => signIn("github")}
         outline
       />
       <div className="text-center text-dark/60">
         Don't have an account?{" "}
         <span
-          onClick={loginModal.onClose}
+          onClick={() => {
+            loginModal.onClose();
+            registerModal.onOpen();
+          }}
           className="text-center text-dark cursor-pointer hover:underline"
         >
           Sign up

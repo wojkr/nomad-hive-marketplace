@@ -9,6 +9,7 @@ import Modal from "./Modal";
 import { toast } from "react-hot-toast";
 
 import useRegisterModal from "@/app/hooks/useRegisterModal";
+import useLoginModal from "@/app/hooks/useLoginModal";
 import Button from "../Button";
 import Heading from "../Heading";
 import Input from "../Input";
@@ -25,6 +26,7 @@ const handleGoogleSubmit = () => {
 const RegisterModal = () => {
   const [isLoading, setIsLoading] = useState(false);
   const registerModal = useRegisterModal();
+  const loginModal = useLoginModal();
   const router = useRouter();
   const {
     register,
@@ -42,9 +44,11 @@ const RegisterModal = () => {
     axios
       .post("/api/register", data)
       .then(() => {
+        toast.success("Registered");
         registerModal.onClose();
-        signIn("credentials", { ...data, redirect: false });
-        router.refresh();
+        loginModal.onOpen();
+        // signIn("credentials", { ...data, redirect: false });
+        // router.refresh();
       })
       .catch((err) => toast.error("Something Went Wrong"))
       .finally(() => setIsLoading(false));
@@ -101,7 +105,7 @@ const RegisterModal = () => {
       <Button
         label="Continue with Google"
         icon={FcGoogle}
-        onClick={handleGoogleSubmit}
+        onClick={() => signIn("google")}
         outline
       />
       <Button
@@ -113,7 +117,10 @@ const RegisterModal = () => {
       <div className="text-center text-dark/60">
         Already have an account?{" "}
         <span
-          onClick={registerModal.onClose}
+          onClick={() => {
+            registerModal.onClose();
+            loginModal.onOpen();
+          }}
           className="text-center text-dark cursor-pointer hover:underline"
         >
           Log in
