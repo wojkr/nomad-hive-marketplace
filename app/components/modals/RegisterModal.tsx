@@ -5,7 +5,6 @@ import axios from "axios";
 import { AiFillGithub } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { IoMdClose } from "react-icons/io";
 import Modal from "./Modal";
 import { toast } from "react-hot-toast";
 
@@ -13,6 +12,8 @@ import useRegisterModal from "@/app/hooks/useRegisterModal";
 import Button from "../Button";
 import Heading from "../Heading";
 import Input from "../Input";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const handleSubmit = () => {
   return null;
@@ -24,7 +25,7 @@ const handleGoogleSubmit = () => {
 const RegisterModal = () => {
   const [isLoading, setIsLoading] = useState(false);
   const registerModal = useRegisterModal();
-
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -40,7 +41,11 @@ const RegisterModal = () => {
     setIsLoading(true);
     axios
       .post("/api/register", data)
-      .then(() => registerModal.onClose())
+      .then(() => {
+        registerModal.onClose();
+        signIn("credentials", { ...data, redirect: false });
+        router.refresh();
+      })
       .catch((err) => toast.error("Something Went Wrong"))
       .finally(() => setIsLoading(false));
   };
@@ -102,7 +107,7 @@ const RegisterModal = () => {
       <Button
         label="Continue with Github"
         icon={AiFillGithub}
-        onClick={handleGoogleSubmit}
+        onClick={() => signIn("github")}
         outline
       />
       <div className="text-center text-dark/60">
