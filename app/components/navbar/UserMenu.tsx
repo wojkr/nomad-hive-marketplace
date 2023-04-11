@@ -8,11 +8,11 @@ import { useState, useCallback } from "react";
 import MenuItem from "./MenuItem";
 import useRegisterModal from "../../hooks/useRegisterModal";
 import useLoginModal from "../../hooks/useLoginModal";
-import { User } from "@prisma/client";
+import { SafeUser } from "@/app/types/index";
 import { signOut } from "next-auth/react";
 
 interface UserMenuProps {
-  currentUser?: User | null;
+  currentUser?: SafeUser | null;
 }
 
 const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
