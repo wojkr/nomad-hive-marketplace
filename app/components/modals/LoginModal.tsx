@@ -41,12 +41,14 @@ const LoginModal = () => {
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
     signIn("credentials", { ...data, redirect: false }).then((cb) => {
-      setIsLoading(true);
+      setIsLoading(false);
+
       if (cb?.ok) {
         toast.success("Logged in");
         router.refresh();
         loginModal.onClose();
       }
+
       if (cb?.error) {
         toast.error(cb.error);
       }

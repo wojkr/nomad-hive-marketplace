@@ -5,6 +5,7 @@ import CilentOnly from "./components/CilentOnly";
 import RegisterModal from "./components/modals/RegisterModal";
 import LoginModal from "./components/modals/LoginModal";
 import ToasterProvider from "./providers/ToasterProvider";
+import getCurrentUser from "./actions/getCurrentUser";
 
 export const metadata = {
   title: "Nomad Hive",
@@ -12,11 +13,12 @@ export const metadata = {
 };
 const font = Space_Grotesk({ subsets: ["latin"] });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const currentUser = await getCurrentUser();
   return (
     <html lang="en">
       <body className={font.className}>
@@ -24,7 +26,7 @@ export default function RootLayout({
           <ToasterProvider />
           <LoginModal />
           <RegisterModal />
-          <Navbar />
+          <Navbar currentUser={currentUser} />
         </CilentOnly>
         {children}
       </body>
