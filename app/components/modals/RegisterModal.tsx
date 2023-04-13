@@ -12,7 +12,7 @@ import useRegisterModal from "@/app/hooks/useRegisterModal";
 import useLoginModal from "@/app/hooks/useLoginModal";
 import Button from "../Button";
 import Heading from "../Heading";
-import Input from "../Input";
+import Input from "../inputs/Input";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
