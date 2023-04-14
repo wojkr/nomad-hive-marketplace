@@ -8,6 +8,8 @@ import useRentModal from "@/app/hooks/useRentModal";
 import { categories } from "../navbar/Categories";
 import CategoryInput from "../inputs/CategoryInput";
 import CountrySelect from "../inputs/CountrySelect";
+import Map from "../Map";
+import dynamic from "next/dynamic";
 
 enum STEPS {
   CATEGORY = 0,
@@ -59,6 +61,10 @@ const RentModal = () => {
   });
   const category = watch("category");
   const location = watch("location");
+  const Map = useMemo(
+    () => dynamic(() => import("../Map"), { ssr: false }),
+    [location]
+  );
 
   const setCustomValue = (id: string, value: any) => {
     setValue(id, value, {
@@ -67,26 +73,6 @@ const RentModal = () => {
       shouldValidate: true,
     });
   };
-
-  //   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-  //     setIsLoading(true);
-  //     signIn("credentials", {
-  //       ...data,
-  //       redirect: false,
-  //     }).then((cb) => {
-  //       setIsLoading(false);
-
-  //       if (cb?.ok) {
-  //         toast.success("Logged in");
-  //         router.refresh();
-  //         loginModal.onClose();
-  //       }
-
-  //       if (cb?.error) {
-  //         toast.error(cb.error);
-  //       }
-  //     });
-  //   };
 
   let bodyContent = (
     <div
@@ -127,70 +113,10 @@ const RentModal = () => {
           value={location}
           onChange={(value) => setCustomValue("location", value)}
         />
+        <Map center={location?.latlng} />
       </div>
     );
   }
-  {
-    /* FORM */
-  }
-  {
-    /* <Input
-    id="email"
-    label="Email"
-    type="email"
-    disabled={isLoading}
-    register={register}
-    errors={errors}
-    required
-  />
-  <Input
-    id="password"
-    label="Password"
-    type="password"
-    disabled={isLoading}
-    register={register}
-    errors={errors}
-    required
-  /> */
-  }
-  //   const footerContent = (
-  //     <div
-  //       className="
-  //       flex
-  //       flex-col
-  //       border-t-[1px]
-  //       border-dark
-  //       w-full
-  //       gap-4
-  //       p-6
-  //       "
-  //     >
-  //       <Button
-  //         label="Continue with Google"
-  //         icon={FcGoogle}
-  //         onClick={() => signIn("google")}
-  //         outline
-  //       />
-  //       <Button
-  //         label="Continue with Github"
-  //         icon={AiFillGithub}
-  //         onClick={() => signIn("github")}
-  //         outline
-  //       />
-  //       <div className="text-center text-dark/60">
-  //         Don't have an account?{" "}
-  //         <span
-  //           onClick={() => {
-  //             loginModal.onClose();
-  //             registerModal.onOpen();
-  //           }}
-  //           className="text-center text-dark cursor-pointer hover:underline"
-  //         >
-  //           Sign up
-  //         </span>
-  //       </div>
-  //     </div>
-  //   );
   return (
     <>
       <Modal
