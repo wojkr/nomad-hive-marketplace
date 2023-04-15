@@ -15,6 +15,7 @@ interface ModalProps {
   disabled?: boolean;
   secondaryAction?: () => void;
   secondaryActionLabel?: string;
+  disableNext?: boolean;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -28,6 +29,7 @@ const Modal: React.FC<ModalProps> = ({
   disabled,
   secondaryAction,
   secondaryActionLabel,
+  disableNext = false,
 }) => {
   const [showModal, setShowModal] = useState(isOpen);
 
@@ -72,6 +74,7 @@ const Modal: React.FC<ModalProps> = ({
       focus:outline-none
       bg-dark/80
       "
+        onClick={handleClose}
       >
         <div
           className="
@@ -86,6 +89,7 @@ const Modal: React.FC<ModalProps> = ({
         lg:h-auto
         md:h-auto
         "
+          onClick={(e) => e.stopPropagation()}
         >
           {/* CONTENT */}
           <div
@@ -184,7 +188,7 @@ const Modal: React.FC<ModalProps> = ({
                     />
                   )}
                   <Button
-                    disabled={disabled}
+                    disabled={disabled || disableNext}
                     label={actionLabel}
                     onClick={handleSubmit}
                   />
