@@ -31,10 +31,6 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ value, onChange }) => {
       options={{ maxFiles: 1 }}
     >
       {({ open }) => {
-        function handleOnClick(e: React.MouseEvent) {
-          e.preventDefault();
-          open();
-        }
         return (
           <button
             className={`
@@ -51,10 +47,14 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ value, onChange }) => {
                 hover:opacity-70
                 transition
                 `}
-            onClick={handleOnClick}
+            onClick={() => open?.()}
           >
-            <TbPhotoPlus size={50} />
-            <div className="font-semibold text-lg">Upload an Image</div>
+            {!value && (
+              <>
+                <TbPhotoPlus size={50} />
+                <div className="font-semibold text-lg">Upload an Image</div>
+              </>
+            )}
             {value && (
               <div
                 className="
