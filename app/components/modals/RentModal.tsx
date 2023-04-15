@@ -94,10 +94,10 @@ const RentModal = () => {
       .post("/api/listings", data)
       .then(() => {
         toast.success("Successfully added your place!");
-        router.refresh();
         reset();
         setStep(STEPS.CATEGORY);
-        rentModal.onClose;
+        rentModal.onClose();
+        router.refresh();
       })
       .catch((e) => {
         toast.error("Something went wrong!");

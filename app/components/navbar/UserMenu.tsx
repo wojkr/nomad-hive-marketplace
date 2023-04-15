@@ -31,6 +31,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
       return loginModal.onOpen();
     }
     rentModal.onOpen();
+    setIsOpen(false);
   }, [currentUser, loginModal, rentModal]);
 
   return (
@@ -39,38 +40,51 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
         <div
           onClick={onRent}
           className="
-        hidden md:block
-        py-3 px-4 rounded-full
-        whitespace-nowrap font-semibold text-sm 
-       hover:bg-accentDark hover:text-white cursor-pointer tranisiton duration-300
-        "
+                  hidden md:block
+                  py-3 px-4 rounded-full
+                  whitespace-nowrap font-semibold text-sm 
+                hover:bg-accentDark hover:text-white cursor-pointer tranisiton duration-300
+                  "
         >
           {" "}
           make a Hive
         </div>
 
-        <Box>
-          <div
-            className="
-        flex
-        flex-row
-        items-center
-        justify-evenly
-        gap-3"
-          >
-            <BiMenu size="18" onClick={toggleOpen} />
-            <div className="hidden md:block">
-              <Avatar src={currentUser?.image} />
-            </div>
+        <div
+          className="
+                      flex
+                      flex-row
+                      items-center
+                      justify-evenly
+                      gap-3
+                      border-[1px]
+                      border-dark
+                      w-full 
+                      md:w-auto
+                      p-2
+                      rounded-full
+                      shadow-sm
+                      hover:shadow-md
+                      cursor-pointer
+                      transition 
+                      duration-200
+                      "
+          onClick={toggleOpen}
+        >
+          <BiMenu size="18" />
+          <div className="hidden md:block">
+            <Avatar src={currentUser?.image} />
           </div>
-        </Box>
+        </div>
       </div>
+
+      {/* HAMBURGER MENU */}
       {isOpen && (
         <div
           className="
-      absolute
-      rounded-xl 
-      shadow-md
+            absolute
+            rounded-xl 
+            shadow-md
       w-max
       bg-light
       overflow-hidden
@@ -79,17 +93,21 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
       text-sm
       border-dark
       border-[1px]
-    
+      
       "
         >
-          <div className="flex flex-col cursor-pointer">
+          <div
+            className="fixed top-0 left-0 w-full h-[100dvh] z-[9]"
+            onClick={() => setIsOpen(false)}
+          ></div>
+          <div className="relative flex flex-col cursor-pointer z-10">
             {currentUser ? (
               <>
                 <MenuItem label="My trips" onClick={() => {}} />
                 <MenuItem label="My favorites" onClick={() => {}} />
                 <MenuItem label="My reservations" onClick={() => {}} />
                 <MenuItem label="My properties" onClick={() => {}} />
-                <MenuItem label="Create a hive" onClick={rentModal.onOpen} />
+                <MenuItem label="Create a hive" onClick={onRent} />
                 <MenuItem label="Logout" onClick={() => signOut()} />
               </>
             ) : (
