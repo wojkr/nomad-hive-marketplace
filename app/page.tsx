@@ -1,4 +1,4 @@
-import ClientOnly from "@/app/components/CilentOnly";
+import ClientOnly from "@/app/components/ClientOnly";
 import EmptyState from "@/app/components/EmptyState";
 import Container from "@/app/components/Container";
 import getListings from "./actions/getListings";
