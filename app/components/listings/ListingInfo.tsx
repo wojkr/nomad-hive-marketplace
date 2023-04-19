@@ -54,7 +54,7 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
                     items-center 
                     gap-4 
                     font-light
-                    text-dark/50
+                    text-neutral
                     "
         >
           <div>{guestCount} guests</div>
@@ -62,7 +62,7 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
           <div>{bathroomCount} bathrooms</div>
         </div>
       </div>
-      <hr />
+      <hr className="border-neutral" />
       {category && (
         <ListingCategory
           icon={category.icon}
@@ -70,9 +70,9 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
           description={category?.description}
         />
       )}
-      <hr />
-      <div className="text-lg font-light text-dark/50">{description}</div>
-      <hr />
+      <hr className="border-neutral" />
+      <div className="text-lg font-light text-neutral">{description}</div>
+      <hr className="border-neutral" />
       <Map center={coordinates} />
     </div>
   );
