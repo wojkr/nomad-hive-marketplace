@@ -30,7 +30,7 @@ export default async function RootLayout({
           <RentModal />
           <Navbar currentUser={currentUser} />
         </CilentOnly>
-        <div className="pb-20 pt-28">{children}</div>
+        <div className="pb-20 pt-28 bg-light">{children}</div>
       </body>
     </html>
   );
