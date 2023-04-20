@@ -88,16 +88,15 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
             absolute
             rounded-xl 
             shadow-md
-      w-max
-      bg-light
-      overflow-hidden
-      right-0
-      top-12
-      text-sm
-      border-dark
-      border-[1px]
-      
-      "
+            w-max
+            bg-light
+            overflow-hidden
+            right-0
+            top-12
+            text-sm
+            border-dark
+            border-[1px]
+            "
         >
           <div
             className="fixed top-0 left-0 w-full h-[100dvh] z-[9]"
@@ -110,12 +109,18 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
                   label="My trips"
                   onClick={() => router.push("/trips")}
                 />
-                <MenuItem label="My favorites" onClick={() => {}} />
+                <MenuItem
+                  label="My favorites"
+                  onClick={() => router.push("/favorites")}
+                />
                 <MenuItem
                   label="My reservations"
                   onClick={() => router.push("/reservations")}
                 />
-                <MenuItem label="My properties" onClick={() => {}} />
+                <MenuItem
+                  label="My properties"
+                  onClick={() => router.push("/properties")}
+                />
                 <MenuItem label="Create a hive" onClick={onRent} />
                 <MenuItem label="Logout" onClick={() => signOut()} />
               </>
