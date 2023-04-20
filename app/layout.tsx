@@ -22,7 +22,7 @@ export default async function RootLayout({
   const currentUser = await getCurrentUser();
   return (
     <html lang="en">
-      <body className={font.className}>
+      <body className={`${font.className}  bg-light`}>
         <CilentOnly>
           <ToasterProvider />
           <LoginModal />
@@ -30,7 +30,7 @@ export default async function RootLayout({
           <RentModal />
           <Navbar currentUser={currentUser} />
         </CilentOnly>
-        <div className="pb-20 pt-28 bg-light">{children}</div>
+        <div className="pb-20 pt-28">{children}</div>
       </body>
     </html>
   );
