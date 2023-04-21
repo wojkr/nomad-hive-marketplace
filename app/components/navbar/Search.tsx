@@ -2,11 +2,15 @@
 
 import { BiSearch } from "react-icons/bi";
 import Box from "../Box";
+import useSearchModal from "@/app/hooks/useSearchModal";
 
 const Search = () => {
+  const searchModal = useSearchModal();
+
   return (
     <Box>
       <div
+        onClick={searchModal.onOpen}
         className="
         flex
         flex-row
