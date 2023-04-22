@@ -54,17 +54,6 @@ export default async function getListing(params: IListingsParams) {
     if (locationValue) {
       query.locationValue = locationValue;
     }
-
-    const listings = await prisma.listing.findMany({
-      where: query,
-      orderBy: { createdAt: "desc" },
-    });
-
-    const safeListing = listings.map((l) => ({
-      ...l,
-      createdAt: l.createdAt.toISOString(),
-    }));
-
     if (startDate && endDate) {
       query.NOT = {
         reservations: {
@@ -83,6 +72,16 @@ export default async function getListing(params: IListingsParams) {
         },
       };
     }
+
+    const listings = await prisma.listing.findMany({
+      where: query,
+      orderBy: { createdAt: "desc" },
+    });
+
+    const safeListing = listings.map((l) => ({
+      ...l,
+      createdAt: l.createdAt.toISOString(),
+    }));
 
     return safeListing;
   } catch (e: any) {
