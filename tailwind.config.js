@@ -9,7 +9,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        dark: "#333544", //added in calendar!
+        dark: "#333544", //added in calendar,loader!
         light: "#FFF9F3",
         accent: "#C25963",
         accent2: "#4078b5",
