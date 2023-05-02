@@ -3,9 +3,42 @@
 import { BiSearch } from "react-icons/bi";
 import Box from "../Box";
 import useSearchModal from "@/app/hooks/useSearchModal";
+import { useSearchParams } from "next/navigation";
+import useCountries from "@/app/hooks/useCountries";
+import { useMemo } from "react";
+import { differenceInDays } from "date-fns";
 
 const Search = () => {
   const searchModal = useSearchModal();
+  const params = useSearchParams();
+  const { getByValue } = useCountries();
+  const locationValue = params?.get("locationValue");
+  const startDate = params?.get("startDate");
+  const endDate = params?.get("endDate");
+  const guestCount = params?.get("guestCount");
+
+  const locationText = useMemo(() => {
+    if (locationValue) return getByValue(locationValue)?.label;
+    return "Anywhere";
+  }, [locationValue, getByValue]);
+
+  const dateText = useMemo(() => {
+    if (startDate && endDate) {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+
+      const difference = differenceInDays(end, start);
+      if (difference === 0) return "1 Day";
+      return `${difference} Days`;
+    }
+    return "Any Week";
+  }, [startDate, endDate]);
+  const guestText = useMemo(() => {
+    if (guestCount) {
+      return Number(guestCount) === 1 ? `1 Guest` : `${guestCount} Guests`;
+    }
+    return "Add Guests";
+  }, [guestCount]);
 
   return (
     <Box>
@@ -27,7 +60,7 @@ const Search = () => {
         duration-300
         "
         >
-          Anywhere
+          {locationText}
         </div>
         <div
           className="
@@ -45,7 +78,7 @@ const Search = () => {
         duration-300
          "
         >
-          Any Week
+          {dateText}
         </div>
         <div
           className="
@@ -59,7 +92,7 @@ const Search = () => {
         "
         >
           <div className="hidden sm:block         hover:text-accentDark">
-            Add Guests
+            {guestText}
           </div>
           <div
             className="
