@@ -106,7 +106,7 @@ const LoginModal = () => {
         outline
       />
       <div className="text-center text-dark/60">
-        Don't have an account?{" "}
+        {"Don't have an account?"}
         <span
           onClick={() => {
             loginModal.onClose();
