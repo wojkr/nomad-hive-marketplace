@@ -84,7 +84,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
       .finally(() => {
         setIsLoading(false);
       });
-  }, [currentUser, totalPrice, dateRange, listing.id, loginModal]);
+  }, [currentUser, totalPrice, dateRange, listing.id, loginModal, router]);
 
   useEffect(() => {
     let daysCount = 0;

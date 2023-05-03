@@ -22,19 +22,9 @@ import { usePathname, useSearchParams } from "next/navigation";
 
 export const categories = [
   {
-    label: "Beach",
-    icon: TbBeach,
-    description: "This property is close to the beach",
-  },
-  {
-    label: "Windmills",
-    icon: GiWindmill,
-    description: "This property has windmills",
-  },
-  {
-    label: "Modern",
-    icon: MdOutlineVilla,
-    description: "This property is Modern",
+    label: "Lake",
+    icon: GiBoatFishing,
+    description: "This property is near a lake!",
   },
   {
     label: "Countryside",
@@ -42,9 +32,9 @@ export const categories = [
     description: "This property is in the countryside!",
   },
   {
-    label: "Pools",
-    icon: TbPool,
-    description: "This is property has a beautiful pool!",
+    label: "Beach",
+    icon: TbBeach,
+    description: "This property is close to the beach",
   },
   {
     label: "Islands",
@@ -52,24 +42,9 @@ export const categories = [
     description: "This property is on an island!",
   },
   {
-    label: "Lake",
-    icon: GiBoatFishing,
-    description: "This property is near a lake!",
-  },
-  {
-    label: "Skiing",
-    icon: FaSkiing,
-    description: "This property has skiing activies!",
-  },
-  {
-    label: "Castles",
-    icon: GiCastle,
-    description: "This property is an ancient castle!",
-  },
-  {
-    label: "Caves",
-    icon: GiCaveEntrance,
-    description: "This property is in a spooky cave!",
+    label: "Pools",
+    icon: TbPool,
+    description: "This is property has a beautiful pool!",
   },
   {
     label: "Camping",
@@ -77,9 +52,9 @@ export const categories = [
     description: "This property offers camping activities!",
   },
   {
-    label: "Arctic",
-    icon: BsSnow,
-    description: "This property is in arctic environment!",
+    label: "Skiing",
+    icon: FaSkiing,
+    description: "This property has skiing activies!",
   },
   {
     label: "Desert",
@@ -95,6 +70,32 @@ export const categories = [
     label: "Lux",
     icon: IoDiamond,
     description: "This property is brand new and luxurious!",
+  },
+
+  {
+    label: "Modern",
+    icon: MdOutlineVilla,
+    description: "This property is Modern",
+  },
+  {
+    label: "Castles",
+    icon: GiCastle,
+    description: "This property is an ancient castle!",
+  },
+  {
+    label: "Caves",
+    icon: GiCaveEntrance,
+    description: "This property is in a spooky cave!",
+  },
+  {
+    label: "Windmills",
+    icon: GiWindmill,
+    description: "This property has windmills",
+  },
+  {
+    label: "Arctic",
+    icon: BsSnow,
+    description: "This property is in arctic environment!",
   },
 ];
 

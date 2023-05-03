@@ -18,7 +18,7 @@ const useFavorite = ({ currentUser, listingId }: IUseFavorite) => {
   const hasFavorited = useMemo(() => {
     if (!currentUser?.favoriteIds) return false;
     return currentUser?.favoriteIds.includes(listingId);
-  }, [currentUser?.favoriteIds]);
+  }, [currentUser?.favoriteIds, listingId]);
 
   let toggleFavorite = useCallback(
     async (e: React.MouseEvent<HTMLDivElement>) => {

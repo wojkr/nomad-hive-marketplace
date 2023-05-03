@@ -28,6 +28,7 @@ const ReservationClient: React.FC<ReservationClientProps> = ({
         .delete(`/api/reservations/${id}`)
         .then(() => {
           toast.success("Reservation cancelled");
+          router.refresh();
         })
         .catch((e: any) =>
           //   toast.error(e?.response?.data?.error)
