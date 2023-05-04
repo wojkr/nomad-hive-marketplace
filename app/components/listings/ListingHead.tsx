@@ -45,7 +45,10 @@ const ListingHead: React.FC<ListingHeadProps> = ({
           src={imageSrc}
           alt="image"
           fill
-          className="object-cover w-full"
+          sizes="(max-width: 768px) 100vw,
+          (max-width: 1200px) 50vw,
+          33vw"
+          className="object-contain w-full"
         />
         <div
           className="
