@@ -74,7 +74,7 @@ const Modal: React.FC<ModalProps> = ({
       focus:outline-none
       bg-dark/80
       "
-        onClick={handleClose}
+        onMouseDown={handleClose}
       >
         <div
           className="
@@ -89,7 +89,7 @@ const Modal: React.FC<ModalProps> = ({
         lg:h-auto
         md:h-auto
         "
-          onClick={(e) => e.stopPropagation()}
+          onMouseDown={(e) => e.stopPropagation()}
         >
           {/* CONTENT */}
           <div
