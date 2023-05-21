@@ -2,8 +2,13 @@
 
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import L from "leaflet";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import { useMap } from "react-leaflet";
+import {
+  MapContainer,
+  Marker,
+  Popup,
+  TileLayer,
+  useMapEvents,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
@@ -23,23 +28,68 @@ interface MapProps {
   center?: number[];
 }
 
-const Map: React.FC<MapProps> = ({ center }) => {
+interface MapPropertiesTypes {
+  center: L.LatLngExpression;
+  bounds: L.LatLngBoundsExpression;
+}
+
+const Map: React.FC<MapProps> = ({ center = [51.505, -0.09] }) => {
   const [draggable, setDraggable] = useState(false);
-  const [position, setPosition] = useState(center || [51.505, -0.09]);
+  const [position, setPosition] = useState<L.LatLngExpression>(
+    L.latLng(center[0], center[1])
+  );
+  const [isMarkerInViewport, setIsMarkerInViewport] = useState(true);
+  const [message, setMessage] = useState("Move marker to add your address");
+
   const markerRef = useRef(null);
   const mapRef = useRef(null);
+
+  //DRAGGING THE MARKER:
   const eventHandlers = useMemo(
     () => ({
       dragend() {
         const marker = markerRef.current;
         if (marker != null) {
           // @ts-ignore{
-          setPosition(marker.getLatLng());
+          const markerCoords: L.LatLng = marker.getLatLng();
+          checkIsMarkerInViewport(markerCoords);
+          setPosition(markerCoords);
         }
       },
     }),
     []
   );
+
+  //MOVING THE MAP:
+  function MapEventHandlers() {
+    const map = useMapEvents({
+      moveend() {
+        checkIsMarkerInViewport(position, false);
+      },
+    });
+    return null;
+  }
+
+  const checkIsMarkerInViewport = useCallback(
+    (markerCoords: L.LatLngExpression, updateInfo = true) => {
+      const checkIsMarkerInViewport = mapRef.current
+        // @ts-ignore{
+        ?.getBounds()
+        .contains(markerCoords);
+      setIsMarkerInViewport(checkIsMarkerInViewport);
+
+      const messageNewLocation = `Your location: ${markerCoords}`;
+      const messageMarkerNotInTheViewport =
+        "Marker not in the viewport, please center it and place it over the correct address.";
+      setMessage(
+        checkIsMarkerInViewport
+          ? messageNewLocation
+          : messageMarkerNotInTheViewport
+      );
+    },
+    [position]
+  );
+
   const toggleDraggable = useCallback(() => {
     setDraggable((d) => !d);
   }, []);
@@ -48,7 +98,6 @@ const Map: React.FC<MapProps> = ({ center }) => {
     <Marker
       draggable={draggable}
       eventHandlers={eventHandlers}
-      // @ts-ignore
       position={position}
       ref={markerRef}
     >
@@ -66,20 +115,32 @@ const Map: React.FC<MapProps> = ({ center }) => {
     const map = mapRef.current;
     if (map != null) {
       //@ts-ignore
-      const mapCenter = map.getCenter();
-      if (draggable) {
-        //SHOW AND CENTER THE MARKER
-        centerMarker(mapCenter);
-      } else {
+      const mapProperties: MapPropertiesTypes = {
+        //@ts-ignore
+        center: map.getCenter(),
+        //@ts-ignore
+        bounds: map.getBounds(),
+      };
+      if (isMarkerInViewport) {
         //ADD COORD
+      } else {
+        //SHOW AND CENTER THE MARKER
+        centerMarker(mapProperties);
       }
     }
   }
-  function centerMarker(mapCenter: L.LatLngExpression) {
+  function centerMarker(map: MapPropertiesTypes) {
+    //@ts-ignore
     const marker = markerRef.current;
     //@ts-ignore
-    marker.setLatLng(mapCenter);
+    const markerCoords: L.LatLngExpression = marker.getLatLng();
+
+    //@ts-ignore
+    marker.setLatLng(map.center);
+    checkIsMarkerInViewport(map.center);
+    setPosition(map.center);
   }
+
   return (
     <>
       <MapContainer
@@ -90,20 +151,33 @@ const Map: React.FC<MapProps> = ({ center }) => {
         ref={mapRef}
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-
         {DraggableMarker}
+        <MapEventHandlers />
       </MapContainer>
-      <Button
-        //   disabled={disabled}
-        label={draggable ? "Turn Off Drag" : "Drag Marker"}
-        onClick={toggleDraggable}
-        outline
-      />
-      <Button
-        label={draggable ? "Center Marker" : "Add Coords"}
-        onClick={handleMap}
-        outline
-      />
+      {message}
+
+      <div
+        className="
+                flex
+                flex-row
+                items-center
+                p-6
+                gap-4
+                w-full
+                "
+      >
+        <Button
+          disabled={!isMarkerInViewport}
+          label={draggable ? "Lock Marker" : "Move Marker"}
+          onClick={toggleDraggable}
+          outline
+        />
+        <Button
+          label={!isMarkerInViewport ? "Center Marker" : "Add Coords"}
+          onClick={handleMap}
+          outline
+        />
+      </div>
     </>
   );
 };
