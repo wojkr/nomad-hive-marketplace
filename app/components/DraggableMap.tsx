@@ -91,8 +91,14 @@ const Map: React.FC<MapProps> = ({ center = [51.505, -0.09] }) => {
   );
 
   const toggleDraggable = useCallback(() => {
-    setDraggable((d) => !d);
-  }, []);
+    if (!isMarkerInViewport) {
+      //@ts-ignore
+      const map = mapRef?.current.setView(position);
+      setMessage("centering the view on marker");
+    } else {
+      setDraggable((d) => !d);
+    }
+  }, [draggable, isMarkerInViewport]);
 
   const DraggableMarker = (
     <Marker
@@ -166,9 +172,16 @@ const Map: React.FC<MapProps> = ({ center = [51.505, -0.09] }) => {
                 w-full
                 "
       >
+        {/* when !isMarkerInViewport and marker draggable => button "lock/move marker" center on marker */}
         <Button
-          disabled={!isMarkerInViewport}
-          label={draggable ? "Lock Marker" : "Move Marker"}
+          // disabled={!isMarkerInViewport}
+          label={
+            !isMarkerInViewport
+              ? "Center On Marker"
+              : !draggable
+              ? "Move Marker"
+              : "Lock Marker"
+          }
           onClick={toggleDraggable}
           outline
         />
