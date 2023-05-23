@@ -1,6 +1,13 @@
 "use client";
 
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import L from "leaflet";
 import {
   MapContainer,
@@ -33,13 +40,14 @@ interface MapPropertiesTypes {
   bounds: L.LatLngBoundsExpression;
 }
 
-const Map: React.FC<MapProps> = ({ center = [51.505, -0.09] }) => {
+const Map: React.FC<MapProps> = ({ center = [51.5050001, -0.0900001] }) => {
   const [draggable, setDraggable] = useState(false);
   const [position, setPosition] = useState<L.LatLngExpression>(
     L.latLng(center[0], center[1])
   );
   const [isMarkerInViewport, setIsMarkerInViewport] = useState(true);
   const [message, setMessage] = useState("Move marker to add your address");
+  const [isReqSent, setIsReqSent] = useState(false);
 
   const markerRef = useRef(null);
   const mapRef = useRef(null);
@@ -48,12 +56,14 @@ const Map: React.FC<MapProps> = ({ center = [51.505, -0.09] }) => {
   const eventHandlers = useMemo(
     () => ({
       dragend() {
-        const marker = markerRef.current;
-        if (marker != null) {
-          // @ts-ignore{
-          const markerCoords: L.LatLng = marker.getLatLng();
-          checkIsMarkerInViewport(markerCoords);
-          setPosition(markerCoords);
+        if (!isReqSent) {
+          const marker = markerRef.current;
+          if (marker != null) {
+            // @ts-ignore{
+            const markerCoords: L.LatLng = marker.getLatLng();
+            checkIsMarkerInViewport(markerCoords);
+            setPosition(markerCoords);
+          }
         }
       },
     }),
@@ -92,9 +102,11 @@ const Map: React.FC<MapProps> = ({ center = [51.505, -0.09] }) => {
 
   const toggleDraggable = useCallback(() => {
     if (!isMarkerInViewport) {
-      //@ts-ignore
-      const map = mapRef?.current.setView(position);
-      setMessage("centering the view on marker");
+      if (!isReqSent) {
+        //@ts-ignore
+        const map = mapRef?.current.setView(position);
+        setMessage("centering the view on marker");
+      }
     } else {
       setDraggable((d) => !d);
     }
@@ -128,7 +140,7 @@ const Map: React.FC<MapProps> = ({ center = [51.505, -0.09] }) => {
         bounds: map.getBounds(),
       };
       if (isMarkerInViewport) {
-        //ADD COORD
+        //ADD COORD: reverse geocoding: https://geocode.maps.co/reverse?lat=51.0000000&lon=-0.2787414
       } else {
         //SHOW AND CENTER THE MARKER
         centerMarker(mapProperties);
@@ -146,6 +158,20 @@ const Map: React.FC<MapProps> = ({ center = [51.505, -0.09] }) => {
     checkIsMarkerInViewport(map.center);
     setPosition(map.center);
   }
+
+  useLayoutEffect(() => {
+    if (!isReqSent) {
+      //@ts-ignore
+      const { lat, lng } = position;
+      setIsReqSent(true);
+      fetch(`https://geocode.maps.co/reverse?lat=${lat}&lon=${lng}`)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data.address.country);
+        })
+        .finally(() => setIsReqSent(false));
+    }
+  }, [position]);
 
   return (
     <>
